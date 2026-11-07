@@ -1,0 +1,38 @@
+services:
+  # Backend API Web Service on Render
+  - type: web
+    name: vynk-social-backend
+    runtime: node
+    plan: starter # Starter plan supports persistent disk; change to 'free' if deploying without persistent disk
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    disk:
+      name: vynk-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DB_PATH
+        value: /var/data/vynk.db
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+      - key: CLIENT_URL
+        sync: false # Set to your Vercel URL, e.g. https://vynk.vercel.app
+      - key: CORS_ORIGIN
+        sync: false # Set to your Vercel URL, e.g. https://vynk.vercel.app
+      - key: JWT_SECRET
+        generateValue: true # Render automatically generates a secure 256-bit random string
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: STORAGE_PROVIDER
+        value: local
+      - key: AI_PROVIDER
+        value: local_semantic
+      - key: AI_MODEL
+        value: vynk-semantic-nlp-v4

@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    image: vynk-social-backend:latest
+    container_name: vynk_backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - DB_PATH=/app/backend/data/vynk.db
+      - UPLOAD_DIR=/app/backend/uploads
+      - CLIENT_URL=${CLIENT_URL:-http://localhost}
+      - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost,http://localhost:80,http://127.0.0.1}
+      - JWT_SECRET=${JWT_SECRET:-vynk_prod_super_secret_replace_in_env_file}
+      - JWT_EXPIRES_IN=7d
+      - STORAGE_PROVIDER=local
+      - AI_PROVIDER=${AI_PROVIDER:-local_semantic}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+    volumes:
+      # Persistent SQLite database volume
+      - vynk_db_data:/app/backend/data
+      # Persistent uploaded media files volume
+      - vynk_media_uploads:/app/backend/uploads
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:5000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - vynk_network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    image: vynk-social-frontend:latest
+    container_name: vynk_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - vynk_network
+
+volumes:
+  vynk_db_data:
+    name: vynk_db_data
+  vynk_media_uploads:
+    name: vynk_media_uploads
+
+networks:
+  vynk_network:
+    name: vynk_network
+    driver: bridge

@@ -1,0 +1,28 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="vynk-wing-left" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="50%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+    <linearGradient id="vynk-wing-right" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="60%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#f43f5e" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Left Wing -->
+  <path d="M60 92C60 92 28 85 24 55C20 28 42 16 52 35C58 46 60 70 60 92Z" 
+        fill="url(#vynk-wing-left)" 
+        filter="url(#glow)" />
+        
+  <!-- Right Wing -->
+  <path d="M60 92C60 92 92 85 96 55C100 28 78 16 68 35C62 46 60 70 60 92Z" 
+        fill="url(#vynk-wing-right)" 
+        filter="url(#glow)" />
+</svg>

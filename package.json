@@ -1,0 +1,14 @@
+{
+  "name": "vynk-platform",
+  "version": "2.0.0",
+  "description": "Vynk - Next-Generation Social Media Platform",
+  "scripts": {
+    "test": "cd backend && npx tsx --test tests/phase1.test.ts && npx tsx --test tests/phase2.test.ts",
+    "test:phase1": "cd backend && npx tsx --test tests/phase1.test.ts",
+    "test:phase2": "cd backend && npx tsx --test tests/phase2.test.ts",
+    "seed": "cd backend && npx tsx src/db/seed.ts",
+    "backend": "cd backend && npx tsx src/server.ts",
+    "frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build"
+  }
+}
